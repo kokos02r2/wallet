@@ -1,22 +1,85 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ввод данных</title>
-</head>
-<body>
-    <form id="dataForm">
-        На что потратил: <input type="text" id="expense"><br>
-        Сумма: <input type="text" id="amount"><br>
-        <button type="button" onclick="sendData()">Сохранить</button>
-    </form>
-    <script>
-        function sendData() {
-            const expense = document.getElementById('expense').value;
-            const amount = document.getElementById('amount').value;
-            const data = `${expense},${amount}`;
-            console.log("Отправка данных: ", data);  // Отладка
-            Telegram.WebApp.sendData(data);  // Отправка данных обратно боту
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f7f6;
+            font-family: Arial, sans-serif;
         }
+        .container {
+            background: #fff;
+            padding: 20px 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 24px;
+            color: #333;
+        }
+        input[type="text"], input[type="number"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #error {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form id="form">
+            <h1>Введите ваши данные</h1>
+            <input type="text" placeholder="На что потрачено" id="aim" pattern="[А-Яа-яЁё\s]*" minlength="2" required>
+            <input type="number" placeholder="Сумма" id="cost" required>
+            <div id="error"></div>
+            <button type="button" id="accept">Сохранить</button>
+        </form>
+    </div>
+    <script>
+        const tg = window.Telegram.WebApp;
+
+        document.getElementById("accept").addEventListener("click", (event) => {
+            event.preventDefault();
+
+            let aim = document.getElementById("aim").value;
+            let cost = document.getElementById("cost").value;
+
+            let data = {
+                aim: aim,
+                cost: cost,
+            }
+
+            console.log("Отправка данных: ", data);  // Отладка
+            tg.sendData(JSON.stringify(data));
+            tg.close();
+        });
     </script>
 </body>
+
 </html>
