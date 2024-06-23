@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Ввод данных</title>
+</head>
+
+<body>
+    <form id="dataForm">
+        На что потратил: <input type="text" id="expense"><br>
+        Сумма: <input type="text" id="amount"><br>
+        <button type="button" onclick="sendData()">Сохранить</button>
+    </form>
+    <script>
+        function sendData() {
+            const expense = document.getElementById('expense').value;
+            const amount = document.getElementById('amount').value;
+            const data = `${expense},${amount}`;
+            Telegram.WebApp.sendData(data);  // Отправка данных обратно боту
+        }
+    </script>
+</body>
+
+</html>
